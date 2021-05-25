@@ -86,6 +86,8 @@ public:
 
 进一步精简：
 
+函数功能也可以理解为`root`后面拼接`ans`。
+
 ```c++
 class Solution{
 public:

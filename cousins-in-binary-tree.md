@@ -1,14 +1,14 @@
-# [993. 二叉树的堂兄弟节点](https://leetcode-cn.com/problems/cousins-in-binary-tree/) 之妙不可言的位操作
+# [993. 二叉树的堂兄弟结点](https://leetcode-cn.com/problems/cousins-in-binary-tree/) 之妙不可言的位操作
 
 # 题目：
 
-在二叉树中，根节点位于深度 0 处，每个深度为 k 的节点的子节点位于深度 k+1 处。
+在二叉树中，根结点位于深度 0 处，每个深度为 k 的结点的子结点位于深度 k+1 处。
 
-如果二叉树的两个节点深度相同，但 父节点不同 ，则它们是一对堂兄弟节点。
+如果二叉树的两个结点深度相同，但 父结点不同 ，则它们是一对堂兄弟结点。
 
-我们给出了具有唯一值的二叉树的根节点 root ，以及树中两个不同节点的值 x 和 y 。
+我们给出了具有唯一值的二叉树的根结点 root ，以及树中两个不同结点的值 x 和 y 。
 
-只有与值 x 和 y 对应的节点是堂兄弟节点时，才返回 true 。否则，返回 false。
+只有与值 x 和 y 对应的结点是堂兄弟结点时，才返回 true 。否则，返回 false。
 
 来源：力扣（LeetCode）
 
@@ -18,7 +18,7 @@ blog：https://blog.csdn.net/github_39329077
 
 # 解法一：
 
-判断是否为堂兄弟：深度相同，父节点不同。所以要有`depth`参数和`parent`参数，fun函数作先序遍历时找到target（x or y）就以pair的形式返回深度和父节点的值（因为二叉树中各节点值唯一所以可以仅用父节点的val来判断父节点是否相同），`x`、`y`进入`fun`找到自己的位置后直接返回结果并作剪枝操作，避免浪费时间作无用的搜索。
+判断是否为堂兄弟：深度相同，父结点不同。所以要有`depth`参数和`parent`参数，fun函数作先序遍历时找到target（x or y）就以pair的形式返回深度和父结点的值（因为二叉树中各结点值唯一所以可以仅用父结点的val来判断父结点是否相同），`x`、`y`进入`fun`找到自己的位置后直接返回结果并作剪枝操作，避免浪费时间作无用的搜索。
 
 即：DFS+pair+剪枝
 
@@ -37,7 +37,7 @@ public:
         if(!root)
             return make_pair(-1, -1);
         if(root->val == target) {
-            return make_pair(depth, parent == nullptr ? -1: parent->val);//需注意下parent为根节点时
+            return make_pair(depth, parent == nullptr ? -1: parent->val);//需注意下parent为根结点时
         }
         pair<int, int> p = fun(root->left, root, depth+1, target);
         if(p.first == -1 && p.second == -1)
@@ -84,13 +84,13 @@ public:
 
 # 解法二：
 
-这个解法从@Edward Elric那学到的，妙不可言！类似堆排序时，用数组建堆，这里我们只用数组存树，不作调整，index为节点序号也是节点在数组中的下标(从1开始)，自上而下，从左至右的分配序号，遇到空结点就跳过这个序号（各结点位置的序号永远与一个完全二叉树的序号一一对应，只是本题的树可以不完全）。
+这个解法从@Edward Elric那学到的，妙不可言！类似堆排序时，用数组建堆，这里我们只用数组存树，不作调整，index为结点序号也是结点在数组中的下标(从1开始)，自上而下，从左至右的分配序号，遇到空结点就跳过这个序号（各结点位置的序号永远与一个完全二叉树的序号一一对应，只是本题的树可以不完全）。
 
-那么对任一序号为k的节点，其父节点的序号就是k/2，其左孩子就是k * 2，右孩子就是k * 2+1，同时最精彩的地方来了！ 对于树中**同一层**的节点，其序号(index)二进制下的最高比特位是相同的，如序号分别为10[1010]，12[1100]的节点都在第4层，他们最高2次幂都是8[1000]。
+那么对任一序号为k的结点，其父结点的序号就是k/2，其左孩子就是k * 2，右孩子就是k * 2+1，同时最精彩的地方来了！ 对于树中**同一层**的结点，其序号(index)二进制下的最高比特位是相同的，如序号分别为10[1010]，12[1100]的结点都在第4层，他们最高2次幂都是8[1000]。
 
 所以就有：
 
-1.通过对下标值除2来判断父节点。
+1.通过对下标值除2来判断父结点。
 
 2.通过判断最高比特位是否相同来判断是否属于同一层。
 
@@ -148,7 +148,7 @@ public:
     int buildTree(TreeNode* root, int index, int target_x, int target_y, int &temp) {
         if(!root)
             return temp;
-        if(root->val == target_x)//各节点的值唯一所以不会重复加
+        if(root->val == target_x)//各结点的值唯一所以不会重复加
             temp += index<<16;
         else if(root->val == target_y)
             temp += index;
@@ -181,7 +181,7 @@ public:
     void buildTree(TreeNode* root, int index, int target_x, int target_y, int &temp) {
         if(!root)
             return ;
-        if(root->val == target_x)//各节点的值唯一所以不会重复加
+        if(root->val == target_x)//各结点的值唯一所以不会重复加
             temp += index<<16;
             else if(root->val == target_y)
                 temp += index;
@@ -201,7 +201,7 @@ public:
 
 BFS
 
-用`preDepth`来判断是否还在同一层，用`comParent`来判断当前节点的左右孩子是否就是所要找的x，y。
+用`preDepth`来判断是否还在同一层，用`comParent`来判断当前结点的左右孩子是否就是所要找的x，y。
 
 ```cpp
 class Solution {
@@ -217,7 +217,7 @@ public:
             auto [cur,curDepth] = qu.front();
             if(preDepth != curDepth && (find_x || find_y))//若遍历到下一层，仅找到一个数，直接不符合
                 return false;
-            preDepth = curDepth;//将当前节点的深度赋给preDepth用于对下个节点判断是否换层了
+            preDepth = curDepth;//将当前结点的深度赋给preDepth用于对下个结点判断是否换层了
             qu.pop();
             if(cur->left) {
                 qu.push(make_pair(cur->left, curDepth+1));
@@ -244,7 +244,7 @@ public:
 
 看了@Qian的写法，太美了，贴来膜拜下
 
-每次直接将一层的节点放入队列，并存下找到的x，y的父节点，然后一并处理。
+每次直接将一层的结点放入队列，并存下找到的x，y的父结点，然后一并处理。
 
 ```cpp
 class Solution {
@@ -273,7 +273,7 @@ public:
                 return false;
             // `x` 和 `y` 都出现了
             else if(rec_parent.size() == 2)
-                // `x` 和 `y` 父节点 相同/不相同 ？
+                // `x` 和 `y` 父结点 相同/不相同 ？
                 return rec_parent[0] != rec_parent[1];
         }
         return false;
@@ -287,7 +287,7 @@ public:
 
 # 小技巧：
 
-- 数组存树时，下标从1开始，各层节点序号的最高比特位相同。用`(x > (x^y) && y > (x^y))`来判断是否同层
+- 数组存树时，下标从1开始，各层结点序号的最高比特位相同。用`(x > (x^y) && y > (x^y))`来判断是否同层
 - `int`作位操作，存多个数
 - 善用容器的size()函数
 
